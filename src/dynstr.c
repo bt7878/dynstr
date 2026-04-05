@@ -1,5 +1,6 @@
 #include "dynstr.h"
 
+#include <limits.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,13 +18,14 @@ static const char *get_const_ptr(const dynstr_t *s) {
 }
 
 static size_t min_cap(size_t n) {
-    if (n == 0) return DYNSTR_SSO_CAP;
-    n |= n >> 1;
-    n |= n >> 2;
-    n |= n >> 4;
-    n |= n >> 8;
-    n |= n >> 16;
-    n |= n >> 32;
+    if (n == 0) {
+        return DYNSTR_SSO_CAP;
+    }
+
+    for (size_t i = 1; i < sizeof(size_t) * CHAR_BIT; i <<= 1) {
+        n |= n >> i;
+    }
+
     return n > DYNSTR_SSO_CAP ? n : DYNSTR_SSO_CAP;
 }
 
