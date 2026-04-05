@@ -139,6 +139,24 @@ void test_reserve_heap_to_larger_heap(void **state) {
     dynstr_destroy(&s);
 }
 
+void test_reserve_above_max_cap(void **state) {
+    (void) state;
+    dynstr_t s;
+    const char *initial_str = "Initial string content";
+    assert_true(dynstr_create(&s, initial_str));
+    const size_t initial_len = dynstr_len(&s);
+    const size_t initial_cap = dynstr_cap(&s);
+    const char *initial_ptr = dynstr_cstr(&s);
+    // Should fail to reserve more than DYNSTR_MAX_CAP
+    assert_false(dynstr_reserve(&s, DYNSTR_MAX_CAP + 1));
+    // Ensure state is unchanged
+    assert_int_equal(dynstr_len(&s), initial_len);
+    assert_int_equal(dynstr_cap(&s), initial_cap);
+    assert_string_equal(dynstr_cstr(&s), initial_str);
+    assert_ptr_equal(dynstr_cstr(&s), initial_ptr);
+    dynstr_destroy(&s);
+}
+
 void test_shrink_to_fit_heap_to_sso(void **state) {
     (void) state;
     dynstr_t s;
@@ -330,6 +348,7 @@ int main() {
         cmocka_unit_test(test_reserve_sso_to_heap),
         cmocka_unit_test(test_reserve_heap_to_larger_heap),
         cmocka_unit_test(test_shrink_to_fit_heap_to_sso),
+        cmocka_unit_test(test_reserve_above_max_cap),
         cmocka_unit_test(test_shrink_to_fit_heap_to_smaller_heap),
         cmocka_unit_test(test_push),
         cmocka_unit_test(test_append_sso),

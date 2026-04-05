@@ -2,8 +2,10 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 
 #define DYNSTR_SSO_CAP 15
+#define DYNSTR_MAX_CAP (SIZE_MAX / 2)
 
 typedef struct dynstr_t {
     union {
