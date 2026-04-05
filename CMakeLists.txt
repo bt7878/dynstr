@@ -7,6 +7,12 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_library(dynstr STATIC src/dynstr.c)
 
+if (MSVC)
+    target_compile_options(dynstr PRIVATE /W4 /WX)
+else ()
+    target_compile_options(dynstr PRIVATE -Wall -Wextra -Werror)
+endif ()
+
 install(TARGETS dynstr ARCHIVE DESTINATION lib)
 install(FILES src/dynstr.h DESTINATION include)
 
@@ -20,7 +26,7 @@ if (BUILD_TESTING)
             URL_HASH SHA256=39f92f366bdf3f1a02af4da75b4a5c52df6c9f7e736c7d65de13283f9f0ef416
             EXCLUDE_FROM_ALL
     )
-    
+
     set(WITH_EXAMPLES OFF CACHE BOOL "" FORCE)
     set(UNIT_TESTING OFF CACHE BOOL "" FORCE)
     FetchContent_MakeAvailable(cmocka)
