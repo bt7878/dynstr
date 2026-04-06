@@ -3,7 +3,7 @@
 #include <cmocka.h>
 #include <string.h>
 
-void test_create_empty(void **state) {
+static void test_create_empty(void **state) {
     (void) state;
     dynstr_t s;
     assert_true(dynstr_create(&s, ""));
@@ -13,7 +13,7 @@ void test_create_empty(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_create_sso(void **state) {
+static void test_create_sso(void **state) {
     (void) state;
     dynstr_t s;
     const char *sso_str = "0123456789ABCDE"; // 15 chars
@@ -24,7 +24,7 @@ void test_create_sso(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_create_heap(void **state) {
+static void test_create_heap(void **state) {
     (void) state;
     dynstr_t s;
     const char *heap_str = "0123456789ABCDEF"; // 16 chars
@@ -35,7 +35,7 @@ void test_create_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_create_large_heap(void **state) {
+static void test_create_large_heap(void **state) {
     (void) state;
     dynstr_t s;
     const char *large_str =
@@ -47,13 +47,13 @@ void test_create_large_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_destroy_null(void **state) {
+static void test_destroy_null(void **state) {
     (void) state;
     // NULL destroy should be safe
     dynstr_destroy(NULL);
 }
 
-void test_clone_sso(void **state) {
+static void test_clone_sso(void **state) {
     (void) state;
     dynstr_t s1, s2;
 
@@ -68,7 +68,7 @@ void test_clone_sso(void **state) {
     dynstr_destroy(&s2);
 }
 
-void test_clone_heap(void **state) {
+static void test_clone_heap(void **state) {
     (void) state;
     dynstr_t s1, s2;
 
@@ -83,7 +83,7 @@ void test_clone_heap(void **state) {
     dynstr_destroy(&s2);
 }
 
-void test_clear_sso(void **state) {
+static void test_clear_sso(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Some content");
@@ -95,7 +95,7 @@ void test_clear_sso(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_clear_heap(void **state) {
+static void test_clear_heap(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "This is a long heap string for clearing.");
@@ -107,7 +107,7 @@ void test_clear_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_reserve_smaller(void **state) {
+static void test_reserve_smaller(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Small"); // len 5, cap 15
@@ -117,7 +117,7 @@ void test_reserve_smaller(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_reserve_sso_to_heap(void **state) {
+static void test_reserve_sso_to_heap(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Small"); // len 5, cap 15
@@ -128,7 +128,7 @@ void test_reserve_sso_to_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_reserve_heap_to_larger_heap(void **state) {
+static void test_reserve_heap_to_larger_heap(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Small");
@@ -139,7 +139,7 @@ void test_reserve_heap_to_larger_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_reserve_above_max_cap(void **state) {
+static void test_reserve_above_max_cap(void **state) {
     (void) state;
     dynstr_t s;
     const char *initial_str = "Initial string content";
@@ -157,7 +157,7 @@ void test_reserve_above_max_cap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_shrink_to_fit_heap_to_sso(void **state) {
+static void test_shrink_to_fit_heap_to_sso(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Small");
@@ -169,7 +169,7 @@ void test_shrink_to_fit_heap_to_sso(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_shrink_to_fit_heap_to_smaller_heap(void **state) {
+static void test_shrink_to_fit_heap_to_smaller_heap(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Small");
@@ -182,7 +182,7 @@ void test_shrink_to_fit_heap_to_smaller_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_push(void **state) {
+static void test_push(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "H");
@@ -194,7 +194,7 @@ void test_push(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_append_sso(void **state) {
+static void test_append_sso(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Hello");
@@ -204,7 +204,7 @@ void test_append_sso(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_append_transition_to_heap(void **state) {
+static void test_append_transition_to_heap(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Hello world");
@@ -214,7 +214,7 @@ void test_append_transition_to_heap(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_pop(void **state) {
+static void test_pop(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Hello world! This string is now on the heap.");
@@ -224,7 +224,7 @@ void test_pop(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_pop_until_sso(void **state) {
+static void test_pop_until_sso(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Hello world! This string is now on the heap.");
@@ -238,7 +238,7 @@ void test_pop_until_sso(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_pop_empty(void **state) {
+static void test_pop_empty(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "");
@@ -247,7 +247,7 @@ void test_pop_empty(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_at(void **state) {
+static void test_at(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "ABC");
@@ -258,7 +258,7 @@ void test_at(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_insert_bounds(void **state) {
+static void test_insert_bounds(void **state) {
     (void) state;
     dynstr_t s;
     assert_true(dynstr_create(&s, "Hello")); // len 5
@@ -269,7 +269,7 @@ void test_insert_bounds(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_remove_bounds(void **state) {
+static void test_remove_bounds(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "[He---llo]");
@@ -284,7 +284,7 @@ void test_remove_bounds(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_substr_bounds(void **state) {
+static void test_substr_bounds(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Original"); // len 8
@@ -309,7 +309,7 @@ void test_substr_bounds(void **state) {
     dynstr_destroy(&s);
 }
 
-void test_sso_to_heap_and_back(void **state) {
+static void test_sso_to_heap_and_back(void **state) {
     (void) state;
     dynstr_t s;
     dynstr_create(&s, "Small"); // SSO
