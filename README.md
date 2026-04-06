@@ -16,11 +16,12 @@ A lightweight, efficient dynamic string library for C with Small String Optimiza
 The `dynstr_t` structure is defined as follows:
 
 ```c
-typedef struct dynstr_t {
+typedef struct {
     union {
         char *ptr;
         char buf[16]; // 15 chars + null terminator
     };
+
     size_t len;
     size_t cap;
 } dynstr_t;

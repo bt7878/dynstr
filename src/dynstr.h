@@ -7,7 +7,7 @@
 #define DYNSTR_SSO_CAP 15
 #define DYNSTR_MAX_CAP (SIZE_MAX / 2)
 
-typedef struct dynstr_t {
+typedef struct {
     union {
         char *ptr;
         char buf[DYNSTR_SSO_CAP + 1];
